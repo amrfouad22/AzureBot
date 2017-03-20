@@ -5,5 +5,5 @@ module.exports={
     subscriptionId:'2cc6c2e8-e5d0-4611-85f2-adea3cccb893',
     notificationUrl:'https://SMSAzureBot.azurewebsites.net/api/proactive',
     deploymentName:'SMSMTDeployment01',
-    resourceGroupName:'SMSMTRG02'
+    resourceGroupName:'SMSMTRG01'
 }

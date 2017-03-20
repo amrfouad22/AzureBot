@@ -14,7 +14,7 @@ var location = 'eastus';
 var done = false;
 
 module.exports = {
-    deployTemplate: function (username, password, dnsLabelPrefix,address, callback) {
+    deployTemplate: function (username, password, dnsLabelPrefix, address, callback) {
         msRestAzure.loginWithServicePrincipalSecret(constants.clientId, constants.secret, constants.domain, function (err, credentials) {
             if (err) return console.log(err);
             resourceClient = new ResourceManagementClient(credentials, constants.subscriptionId);
@@ -43,8 +43,8 @@ module.exports = {
                                     console.log(err);
                                 }
                                 else {
-                                    sendMessage('Your Deployment state is currently:' + result.properties.provisioningState,address);
-                                    if (result.properties.provisioningState == 'Succeeded'||result.properties.provisioningState == 'Failed') {
+                                    sendMessage('Your Deployment state is currently:' + result.properties.provisioningState, address);
+                                    if (result.properties.provisioningState == 'Succeeded' || result.properties.provisioningState == 'Failed') {
                                         done = true;
                                     }
                                     cb();
@@ -95,26 +95,31 @@ function loadTemplateAndDeploy(username, password, dnsLabelPrefix, callback) {
         callback);
 }
 
-function sendMessage(message,address) {
-    var request = require('request');
-    request(
-        {
-            url: constants.notificationUrl,
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: {
-                message: message,
-                address: address
-            },
-            json: true
-        }, function (err, response, body) {
-            if (err) {
-                console.log(err);
-            }
-            else {
-                console.log(body);
-            }
-        });
+function sendMessage(message, address) {
+    try {
+        var request = require('request');
+        request(
+            {
+                url: constants.notificationUrl,
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: {
+                    message: message,
+                    address: address
+                },
+                json: true
+            }, function (err, response, body) {
+                if (err) {
+                    console.log(err);
+                }
+                else {
+                    console.log(body);
+                }
+            });
+    }
+    catch(e){
+        console.log(e);
+    }
 }
